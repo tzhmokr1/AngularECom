@@ -1,15 +1,19 @@
 <div class="main-content">
   <div class="section-content section-content-p30">
+
+    <h4>Category: {{ currentCategoryName }}</h4>
+    <hr>
+
     <div class="container-fluid">
       <div class="row">
 
         <!-- loop over the collection of products-->
-        <div *ngFor="let i of products" class="col-md-3">
+        <div *ngFor="let tmpProduct of products" class="col-md-3">
 
           <div class="product-box">
-            <img src="{{ i.imageUrl }}" class="img-responsive">
-            <h1>{{ i.name }}</h1>
-            <div class="price">{{ i.unitPrice | currency:'CHF ' }}</div>
+            <img src="{{ tmpProduct.imageUrl }}" class="img-responsive">
+            <h1>{{ tmpProduct.name }}</h1>
+            <div class="price">{{ tmpProduct.unitPrice | currency:'CHF ' }}</div>
             <a href="#" class="primary-btn">Add to cart</a>
           </div>
 
