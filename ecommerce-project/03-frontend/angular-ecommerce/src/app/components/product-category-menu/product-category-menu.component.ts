@@ -1,5 +1,5 @@
-import { ProductCategory } from './../../common/product-category';
 import { Component, OnInit } from '@angular/core';
+import { ProductCategory } from 'src/app/common/product-category';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -11,11 +11,15 @@ export class ProductCategoryMenuComponent implements OnInit {
 
   productCategories: ProductCategory[];
 
+
   constructor(private productService: ProductService) { }
 
-  ngOnInit(): void {
+
+  ngOnInit() {
     this.listProductCategories();
   }
+
+
 
   listProductCategories() {
     this.productService.getProductCategories().subscribe(
@@ -23,7 +27,7 @@ export class ProductCategoryMenuComponent implements OnInit {
         console.log('Product Categories=' + JSON.stringify(data));
         this.productCategories = data;
       }
-    )
+    );
   }
 
 }
