@@ -1,4 +1,4 @@
-import { CartItem } from './../common/cart-item';
+import { CartItem } from '../DTO/cart-item';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 

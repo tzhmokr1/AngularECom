@@ -1,4 +1,4 @@
-import { Product } from 'src/app/common/product';
+import { Product } from 'src/app/DTO/product';
 export class CartItem {
 
   id: string;

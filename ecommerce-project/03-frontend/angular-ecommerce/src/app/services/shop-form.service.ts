@@ -1,4 +1,7 @@
-import { Observable, of } from 'rxjs';
+import { State } from './../DTO/state';
+import { Country } from './../DTO/country';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -6,7 +9,26 @@ import { Injectable } from '@angular/core';
 })
 export class ShopFormService {
 
-  constructor() { }
+  private countriesUrl = 'http://localhost:8080/api/countries';
+  private statesUrl = 'http://localhost:8080/api/states';
+
+  constructor(private httpClient: HttpClient) { }
+
+
+  getCountries(): Observable<Country[]> {
+    return this.httpClient.get<GetResponseCountries>(this.countriesUrl).pipe(
+      map(response => response._embedded.countries)
+    );
+  }
+
+
+  getStates(theCountryCode: string): Observable<State[]> {
+    // search url
+    const searchStatesUrl = `${this.statesUrl}/search/findByCountryCode?code=${theCountryCode}`;
+    return this.httpClient.get<GetResponseStates>(searchStatesUrl).pipe(
+      map(response => response._embedded.states)
+    );
+  }
 
 
   getCreditCardMonths(startMonth: number): Observable<number[]> {
@@ -38,4 +60,18 @@ export class ShopFormService {
     return of(data);
   }
 
+}
+
+
+interface GetResponseCountries {
+  _embedded: {
+    countries: Country[];
+  }
+}
+
+
+interface GetResponseStates {
+  _embedded: {
+    states: State[];
+  }
 }
