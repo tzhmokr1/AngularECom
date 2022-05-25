@@ -1,6 +1,6 @@
 import { CartItem } from '../DTO/cart-item';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +8,8 @@ import { Subject } from 'rxjs';
 export class CartService {
 
   cartItems: CartItem[] = [];
-  totalPrice: Subject<number> = new Subject<number>();
-  totalQuantity: Subject<number> = new Subject<number>();
+  totalPrice: Subject<number> = new BehaviorSubject<number>(0);    // BehaviorSubject is a subclass of Observable/Subject, used to publish
+  totalQuantity: Subject<number> = new BehaviorSubject<number>(0); // only latest event to all of the subscribers
 
   constructor() { }
 

@@ -1,3 +1,4 @@
+import { CartService } from 'src/app/services/cart.service';
 import { MyValidators } from './../../validators/my-validators';
 import { Country } from './../../DTO/country';
 import { ShopFormService } from './../../services/shop-form.service';
@@ -24,12 +25,13 @@ export class CheckoutComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder,
-              private shopFormService: ShopFormService) { }
-
-
+              private shopFormService: ShopFormService,
+              private cartService: CartService) { }
 
 
   ngOnInit(): void {
+    this.reviewCartDetails();
+
     this.checkoutFormGroup = this.formBuilder.group({
 
       customer: this.formBuilder.group({
@@ -105,9 +107,22 @@ export class CheckoutComponent implements OnInit {
         this.countries = data;
       }
     );
-
-
   }
+
+
+
+  reviewCartDetails() {
+    // subscribe to cardService.totalQuantity
+    this.cartService.totalQuantity.subscribe(
+      data => this.totalQuantity = data
+    );
+    // subscribe to cardService.totalPrice
+    this.cartService.totalPrice.subscribe(
+      data => this.totalPrice = data
+    );
+  }
+
+
 
   // used in the HTML to access fields
   get firstName() { return this.checkoutFormGroup.get('customer.firstName'); }
