@@ -1,5 +1,5 @@
-import { State } from './../DTO/state';
-import { Country } from './../DTO/country';
+import { State } from '../dto/state';
+import { Country } from '../dto/country';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';

@@ -1,8 +1,8 @@
-import { CartItem } from '../../DTO/cart-item';
+import { CartItem } from '../../dto/cart-item';
 import { CartService } from 'src/app/services/cart.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
-import { Product } from 'src/app/DTO/product';
+import { Product } from 'src/app/dto/product';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

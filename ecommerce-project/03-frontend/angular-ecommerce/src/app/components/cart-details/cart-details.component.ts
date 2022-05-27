@@ -1,5 +1,5 @@
 import { CartService } from 'src/app/services/cart.service';
-import { CartItem } from '../../DTO/cart-item';
+import { CartItem } from '../../dto/cart-item';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

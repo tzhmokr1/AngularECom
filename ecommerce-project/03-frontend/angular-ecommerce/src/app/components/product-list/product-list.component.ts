@@ -1,7 +1,7 @@
-import { CartItem } from '../../DTO/cart-item';
+import { CartItem } from '../../dto/cart-item';
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
-import { Product } from 'src/app/DTO/product';
+import { Product } from 'src/app/dto/product';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from 'src/app/services/cart.service';
 
