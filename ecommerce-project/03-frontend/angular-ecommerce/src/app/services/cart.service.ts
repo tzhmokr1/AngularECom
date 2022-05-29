@@ -10,8 +10,21 @@ export class CartService {
   cartItems: CartItem[] = [];
   totalPrice: Subject<number> = new BehaviorSubject<number>(0);    // BehaviorSubject is a subclass of Observable/Subject, used to publish
   totalQuantity: Subject<number> = new BehaviorSubject<number>(0); // only latest event to all of the subscribers
+  // storage: Storage = localStorage;   // survives browser restarts
+  storage: Storage = sessionStorage;    // Reference to web browser's session storage
 
-  constructor() { }
+
+  constructor() {
+    // read data from storage
+    let data = JSON.parse(this.storage.getItem('cartItems'));   // 'JSON.parse' converts the string to an object
+
+    if (data != null) {
+      this.cartItems = data;
+
+      //compute totals based on the data that is read from storage
+      this.computeCartTotals();
+    }
+   }
 
   addToCart(theCartItem: CartItem) {
     // check if we already have the item in our cart
@@ -57,6 +70,15 @@ export class CartService {
 
     // log cart data just for debugging purposes
     this.logCartData(totalPriceValue, totalQuantityValue);
+
+    // persist cart data
+    this.persistCartItems();
+  }
+
+
+
+  persistCartItems() {
+    this.storage.setItem('cartItems', JSON.stringify(this.cartItems));
   }
 
 
