@@ -13,29 +13,31 @@ import { CartStatusComponent } from './components/cart-status/cart-status.compon
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ReactiveFormsModule } from '@angular/forms';
+
 import { LoginComponent } from './components/login/login.component';
 import { LoginStatusComponent } from './components/login-status/login-status.component';
+import { OKTA_CONFIG, OktaAuthModule, OktaCallbackComponent, OktaAuthGuard } from '@okta/okta-angular';
 
-import {
-  OKTA_CONFIG,
-  OktaAuthModule,
-  OktaCallbackComponent
-} from '@okta/okta-angular';
+import config from './config/config';
+import { MembersPageComponent } from './components/members-page/members-page.component';
 
-import myAppConfig from './config/my-app-config';
 
-const oktaConfig = Object.assign({
-  onAuthRequired: (injector) => {
-    const router = injector.get(Router);
-
-    // Redirect the user to your custom login page
-    router.navigate(['/login']);
-  }
-}, myAppConfig.oidc);
+const oktaConfig = Object.assign(   // create new object 'onAuthRequired'.
+  {                                 // Users not logedin yet get router to Login page
+    onAuthRequired: (oktaAuth, injector) =>
+      {
+        const router = injector.get(Router);
+        // redirect the user to the custom login page
+        router.navigate(['/login']);
+      }
+  }, config.oidc);
 
 const routes: Routes = [
+  {path: 'members', component: MembersPageComponent, canActivate: [ OktaAuthGuard ]},   // Route Guard
+
   {path: 'login/callback', component: OktaCallbackComponent},
   {path: 'login', component: LoginComponent},
+
   {path: 'checkout', component: CheckoutComponent},
   {path: 'cart-details', component: CartDetailsComponent},
   {path: 'products/:id', component: ProductDetailsComponent},
@@ -58,7 +60,8 @@ const routes: Routes = [
     CartDetailsComponent,
     CheckoutComponent,
     LoginComponent,
-    LoginStatusComponent
+    LoginStatusComponent,
+    MembersPageComponent
   ],
   imports: [
     RouterModule.forRoot(routes),   // configure Router based on routes
@@ -68,7 +71,7 @@ const routes: Routes = [
     ReactiveFormsModule,            // add support for reactive forms
     OktaAuthModule
   ],
-  providers: [ProductService, { provide: OKTA_CONFIG, useValue: oktaConfig }],      // allows to inject class
+  providers: [ProductService, { provide: OKTA_CONFIG, useValue: oktaConfig }],      // allows to inject class with reference to OKTA_CONFIG and to use oktaConfig
   bootstrap: [AppComponent]
 })
 export class AppModule { }
