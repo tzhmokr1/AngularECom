@@ -7,7 +7,7 @@ import com.kmorath.ecommerce.dto.PurchaseResponse;
 import com.kmorath.ecommerce.service.CheckoutService;
 
 
-@CrossOrigin("http://localhost:4200")
+
 @RestController
 @RequestMapping("/api/checkout")
 public class CheckoutController {
