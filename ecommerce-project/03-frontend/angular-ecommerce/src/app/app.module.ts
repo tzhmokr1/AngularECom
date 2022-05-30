@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ProductService } from './services/product.service';
 import { Routes, RouterModule, Router} from '@angular/router';
 import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
@@ -21,6 +21,7 @@ import { OKTA_CONFIG, OktaAuthModule, OktaCallbackComponent, OktaAuthGuard } fro
 import config from './config/config';
 import { MembersPageComponent } from './components/members-page/members-page.component';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 
 const oktaConfig = Object.assign(   // create new object 'onAuthRequired'.
@@ -73,8 +74,9 @@ const routes: Routes = [
     NgbModule,                      // ng-bootstrap module, makes classes, interfaces, constants etc. available
     ReactiveFormsModule,            // add support for reactive forms
     OktaAuthModule
-  ],
-  providers: [ProductService, { provide: OKTA_CONFIG, useValue: oktaConfig }],      // allows to inject class with reference to OKTA_CONFIG and to use oktaConfig
+  ],                          //       ref. Variable,    register service
+  providers: [ProductService, { provide: OKTA_CONFIG, useValue: oktaConfig }, // allows to inject class with reference to OKTA_CONFIG and to use oktaConfig
+                              { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -27,12 +27,3 @@ public class CheckoutController {
     }
 
 }
-
-
-
-
-
-
-
-
-
