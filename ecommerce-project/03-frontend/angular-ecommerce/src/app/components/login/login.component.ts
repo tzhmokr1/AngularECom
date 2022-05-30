@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OktaAuthService } from '@okta/okta-angular';
 import * as OktaSignIn from '@okta/okta-signin-widget';
 
-import oidcConfig from '../../config/config';
+import oidcConfig from '../../config/oidcConfig';
 
 @Component({
   selector: 'app-login',

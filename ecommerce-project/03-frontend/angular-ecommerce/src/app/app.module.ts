@@ -18,7 +18,7 @@ import { LoginComponent } from './components/login/login.component';
 import { LoginStatusComponent } from './components/login-status/login-status.component';
 import { OKTA_CONFIG, OktaAuthModule, OktaCallbackComponent, OktaAuthGuard } from '@okta/okta-angular';
 
-import config from './config/config';
+import config from './config/oidcConfig';
 import { MembersPageComponent } from './components/members-page/members-page.component';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
@@ -74,7 +74,7 @@ const routes: Routes = [
     NgbModule,                      // ng-bootstrap module, makes classes, interfaces, constants etc. available
     ReactiveFormsModule,            // add support for reactive forms
     OktaAuthModule
-  ],                          //       ref. Variable,    register service
+  ],                          //      ref. Variable,     register service
   providers: [ProductService, { provide: OKTA_CONFIG, useValue: oktaConfig }, // allows to inject class with reference to OKTA_CONFIG and to use oktaConfig
                               { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],
   bootstrap: [AppComponent]
