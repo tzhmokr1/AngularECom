@@ -20,6 +20,7 @@ import { OKTA_CONFIG, OktaAuthModule, OktaCallbackComponent, OktaAuthGuard } fro
 
 import config from './config/config';
 import { MembersPageComponent } from './components/members-page/members-page.component';
+import { OrderHistoryComponent } from './components/order-history/order-history.component';
 
 
 const oktaConfig = Object.assign(   // create new object 'onAuthRequired'.
@@ -33,7 +34,8 @@ const oktaConfig = Object.assign(   // create new object 'onAuthRequired'.
   }, config.oidc);
 
 const routes: Routes = [
-  {path: 'members', component: MembersPageComponent, canActivate: [ OktaAuthGuard ]},   // Route Guard
+  {path: 'order-history', component: OrderHistoryComponent, canActivate: [ OktaAuthGuard ]},    // Route Guard
+  {path: 'members', component: MembersPageComponent, canActivate: [ OktaAuthGuard ]},           // Route Guard
 
   {path: 'login/callback', component: OktaCallbackComponent},
   {path: 'login', component: LoginComponent},
@@ -61,7 +63,8 @@ const routes: Routes = [
     CheckoutComponent,
     LoginComponent,
     LoginStatusComponent,
-    MembersPageComponent
+    MembersPageComponent,
+    OrderHistoryComponent
   ],
   imports: [
     RouterModule.forRoot(routes),   // configure Router based on routes

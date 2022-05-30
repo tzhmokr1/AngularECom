@@ -1,5 +1,6 @@
 package com.kmorath.ecommerce.config;
 
+import com.kmorath.ecommerce.dao.Order;
 import com.kmorath.ecommerce.entity.Country;
 import com.kmorath.ecommerce.entity.Product;
 import com.kmorath.ecommerce.entity.ProductCategory;
@@ -46,6 +47,7 @@ public class myDataRestConfig implements RepositoryRestConfigurer {
 		disableHttpMethods(ProductCategory.class, config, theUnsupportedActions);
 		disableHttpMethods(Country.class, config, theUnsupportedActions);
 		disableHttpMethods(State.class, config, theUnsupportedActions);
+		disableHttpMethods(Order.class, config, theUnsupportedActions);
 
 		// call an internal helper method
 		exposeIds(config);

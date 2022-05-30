@@ -1,5 +1,5 @@
-import { Purchase } from './../../dto/purchase';
-import { OrderItem } from './../../dto/order-item';
+import { Purchase } from '../../dto/purchase';
+import { OrderItem } from '../../dto/order-item';
 import { Router } from '@angular/router';
 import { CheckoutService } from './../../services/checkout.service';
 import { CartService } from 'src/app/services/cart.service';
@@ -26,6 +26,7 @@ export class CheckoutComponent implements OnInit {
   countries: Country[] = [];
   shippingAddressStates: State[] = [];
   billingAddressStates: State[] = [];
+  storage: Storage = sessionStorage;
 
 
 
@@ -38,6 +39,9 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.reviewCartDetails();
+
+    // read the user's email address from browser storage
+    const theEmail = JSON.parse(this.storage.getItem('userEmail'));
 
     this.checkoutFormGroup = this.formBuilder.group({
 
@@ -52,7 +56,7 @@ export class CheckoutComponent implements OnInit {
                                Validators.minLength(2),
                                MyValidators.notOnlyWhitespace]),
 
-        email: new FormControl('',
+        email: new FormControl(theEmail,
                               [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])
       }),
       shippingAddress: this.formBuilder.group({
