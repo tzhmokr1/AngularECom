@@ -1,15 +1,25 @@
 package com.kmorath.ecommerce.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.kmorath.ecommerce.dao.Customer;
 import com.kmorath.ecommerce.dao.CustomerRepository;
 import com.kmorath.ecommerce.dao.Order;
 import com.kmorath.ecommerce.dao.OrderItem;
+import com.kmorath.ecommerce.dto.PaymentInfo;
 import com.kmorath.ecommerce.dto.Purchase;
 import com.kmorath.ecommerce.dto.PurchaseResponse;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
 
 import javax.transaction.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -18,14 +28,19 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     private CustomerRepository customerRepository;
 
-    public CheckoutServiceImpl(CustomerRepository customerRepository) {
+    public CheckoutServiceImpl(CustomerRepository customerRepository,
+                               @Value("${stripe.key.secret}") String secretKey) {
+
         this.customerRepository = customerRepository;
+
+        // initialize Stripe API with secret key
+        Stripe.apiKey = secretKey;
     }
 
     @Override
     @Transactional
     public PurchaseResponse placeOrder(Purchase purchase) {
-    	
+
         // retrieve the order info from dto
         Order order = purchase.getOrder();
 
@@ -43,16 +58,15 @@ public class CheckoutServiceImpl implements CheckoutService {
 
         // populate customer with order
         Customer customer = purchase.getCustomer();
-        
+
         // check if this is an existing customer
         String theEmail = customer.getEmail();
         Customer customerFromDB = customerRepository.findByEmail(theEmail);
-        
+
         if (customerFromDB != null) {
-        	// found it, let's assign it accordingly
-        	customer = customerFromDB;
+            // we found them ... let's assign them accordingly
+            customer = customerFromDB;
         }
-        
         customer.add(order);
 
         // save to the database
@@ -61,19 +75,32 @@ public class CheckoutServiceImpl implements CheckoutService {
         // return a response
         return new PurchaseResponse(orderTrackingNumber);
     }
-
     
+    
+
+    @Override
+    public PaymentIntent createPaymentIntent(PaymentInfo paymentInfo) throws StripeException {
+
+        List<String> paymentMethodTypes = new ArrayList<>();
+        paymentMethodTypes.add("card");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("amount", paymentInfo.getAmount());
+        params.put("currency", paymentInfo.getCurrency());
+        params.put("payment_method_types", paymentMethodTypes);
+        params.put("description", "My-Shop Purchase");
+        params.put("receipt_email", paymentInfo.getReceiptEmail());
+
+        return PaymentIntent.create(params);
+    }
+    
+    
+
     private String generateOrderTrackingNumber() {
+
         // generate a random UUID number (UUID version-4)
+        // For details see: https://en.wikipedia.org/wiki/Universally_unique_identifier
+        //
         return UUID.randomUUID().toString();
     }
 }
-
-
-
-
-
-
-
-
-

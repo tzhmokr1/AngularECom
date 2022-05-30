@@ -9,9 +9,6 @@ import { from, Observable } from 'rxjs';
 })
 export class AuthInterceptorService implements HttpInterceptor {
 
-  private countriesUrl = environment.shopApiUrl + '/countries';
-  private statesUrl = environment.shopApiUrl + '/states';
-
   constructor(private oktaAuth: OktaAuthService) { }
 
 
